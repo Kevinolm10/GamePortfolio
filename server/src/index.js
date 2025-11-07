@@ -23,6 +23,7 @@ app.get('/api', (req, res) => res.send('✅ Express server running!'));
 io.on('connection', (socket) => {
   console.log('🧩 User connected:', socket.id);
   socket.on('ping', () => socket.emit('pong'));
+  socket.on('disconnect', () => console.log('❌ User disconnected:', socket.id));
 });
 
 const PORT = process.env.PORT || 4000;
