@@ -8,7 +8,6 @@ export default class MainScene extends Phaser.Scene {
   }
 
   async preload() {
-    // Load all assets from JSON
     await AssetLoader.loadAssets(this);
   }
 
