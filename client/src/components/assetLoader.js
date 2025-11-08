@@ -22,6 +22,16 @@ export default class AssetLoader {
         });
       }
 
+      if (assets.objects) {
+        assets.objects.forEach(obj => {
+          const url = obj.path.startsWith('http') ? obj.path : basePath + obj.path;
+          scene.load.spritesheet(obj.key, url, {
+            frameWidth: obj.frameWidth,
+            frameHeight: obj.frameHeight
+          });
+        });
+      }
+
       if (assets.images) {
         assets.images.forEach(img => {
           const url = img.path.startsWith('http') ? img.path : basePath + img.path;
