@@ -9,7 +9,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this.speed = 200;
     this.setFrame(0);
 
-    // 🧭 Remember last direction (default facing down)
     this.lastDirection = 'down';
   }
 
@@ -45,7 +44,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       repeat: -1
     });
 
-    // Walking animations
     scene.anims.create({
       key: 'down',
       frames: scene.anims.generateFrameNumbers('player', { start: 66, end: 70 }),
@@ -80,7 +78,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     let moving = false;
 
-    // Horizontal movement
     if (left) {
       this.body.setVelocityX(-this.speed);
       this.anims.play('left', true);
@@ -93,7 +90,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       moving = true;
     }
 
-    // Vertical movement
     if (up) {
       this.body.setVelocityY(-this.speed);
       this.anims.play('up', true);
@@ -106,7 +102,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       moving = true;
     }
 
-    // 🧍 If not moving → play the correct idle animation
     if (!moving) {
       this.anims.play(`idle-${this.lastDirection}`, true);
     }
