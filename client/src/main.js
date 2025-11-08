@@ -7,9 +7,12 @@ socket.on('connect', () => console.log('✅ Connected to server:', socket.id));
 
 const config = {
   type: Phaser.AUTO,
-  width: 1500,
-  height: 750,
-  scene: [MainScene]
+  width: 800,
+  height: 600,
+  physics: {
+    default: 'arcade',
+    arcade: { debug: false }
+  },
+  scene: [ MainScene ]
 };
-
 new Phaser.Game(config);
