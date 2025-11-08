@@ -1,0 +1,20 @@
+
+{
+  "images": [
+
+  ],
+  "audio": [
+
+  ],
+  "spritesheets": [
+    {
+      "key": "player",
+      "path": "images/player.png",
+      "frameWidth": 16,
+      "frameHeight": 32
+    }
+  ],
+  "objects": [
+
+  ]
+}
