@@ -15,6 +15,11 @@
     }
   ],
   "objects": [
-
+    {
+      "key": "table",
+      "path": "images/interiorAssets.png",
+      "frameWidth": 16,
+      "frameHeight": 16
+    }
   ]
 }
