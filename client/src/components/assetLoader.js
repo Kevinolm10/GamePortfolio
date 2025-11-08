@@ -1,22 +1,45 @@
 export default class AssetLoader {
-  static async loadAssets(scene) {
-    const response = await fetch('src/assets/assets.json');
-    const assets = await response.json();
+  static loadAssets(scene) {
+    const basePath = '/assets/';
 
-    assets.images?.forEach(img => {
-      scene.load.image(img.key, `src/assets/${img.path}`);
+    scene.load.json('assets', basePath + 'assets.json');
+
+    scene.load.once('complete', () => {
+      const assets = scene.cache.json.get('assets');
+      if (!assets) {
+        console.error('No assets.json found or invalid JSON');
+        return;
+      }
+
+      // Directly load all assets synchronously
+      if (assets.spritesheets) {
+        assets.spritesheets.forEach(sheet => {
+          const url = sheet.path.startsWith('http') ? sheet.path : basePath + sheet.path;
+          scene.load.spritesheet(sheet.key, url, {
+            frameWidth: sheet.frameWidth,
+            frameHeight: sheet.frameHeight
+          });
+        });
+      }
+
+      if (assets.images) {
+        assets.images.forEach(img => {
+          const url = img.path.startsWith('http') ? img.path : basePath + img.path;
+          scene.load.image(img.key, url);
+        });
+      }
+
+      if (assets.audio) {
+        assets.audio.forEach(sound => {
+          const url = sound.path.startsWith('http') ? sound.path : basePath + sound.path;
+          scene.load.audio(sound.key, url);
+        });
+      }
+
+      // Start the second load
+      scene.load.start();
     });
 
-    assets.audio?.forEach(sound => {
-      scene.load.audio(sound.key, `src/assets/${sound.path}`);
-    });
-
-    return new Promise(resolve => scene.load.once('complete', resolve));
-  }
-
-  static async getObjects() {
-    const response = await fetch('src/assets/assets.json');
-    const assets = await response.json();
-    return assets.objects || [];
+    scene.load.start(); // Load assets.json first
   }
 }
