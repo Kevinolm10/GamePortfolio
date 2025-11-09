@@ -29,9 +29,7 @@ export default class MainScene extends Phaser.Scene {
 
       const tableFrames = [883, 884, 899, 900];
       this.table = new Objects(this, 200, 200, 'table', tableFrames);
-      this.table.setScale(3);
-
-      this.physics.add.collider(this.player, this.table);
+      this.table.setScale(2);
 
       this.cameras.main.startFollow(this.player, true, 0.08, 0.08);
     });
@@ -46,5 +44,7 @@ export default class MainScene extends Phaser.Scene {
     const down = this.cursors.down.isDown || this.wasd.down.isDown;
 
     this.player.move(left, right, up, down);
+
+    
   }
 }
