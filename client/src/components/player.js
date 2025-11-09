@@ -10,6 +10,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this.setFrame(0);
 
     this.lastDirection = 'down';
+
+    // enable collision with canvas boundaries and other objects
+    this.setCollideWorldBounds(true);
+    this.body.setBounce(1, 1);
+  
   }
 
   static createAnimations(scene) {
