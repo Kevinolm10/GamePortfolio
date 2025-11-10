@@ -23,29 +23,57 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     // Idle animations
     scene.anims.create({
       key: 'idle-down',
-      frames: [{ key: 'player', frame: 3 }],
-      frameRate: 1,
+      frames: [
+        { key: 'player', frame: 42 },
+        { key: 'player', frame: 43 },
+        { key: 'player', frame: 44 },
+        { key: 'player', frame: 45 },
+        { key: 'player', frame: 46 },
+        { key: 'player', frame: 47   }
+      ],
+      frameRate: 4,
       repeat: -1
     });
 
     scene.anims.create({
       key: 'idle-right',
-      frames: [{ key: 'player', frame: 0 }],
-      frameRate: 1,
+      frames: [
+        { key: 'player', frame: 24 },
+        { key: 'player', frame: 25 },
+        { key: 'player', frame: 26 },
+        { key: 'player', frame: 27 },
+        { key: 'player', frame: 28 },
+        { key: 'player', frame: 29   }
+      ],
+      frameRate: 4,
       repeat: -1
     });
 
     scene.anims.create({
       key: 'idle-left',
-      frames: [{ key: 'player', frame: 2 }],
-      frameRate: 1,
+      frames: [
+        { key: 'player', frame: 36 },
+        { key: 'player', frame: 37 },
+        { key: 'player', frame: 38 },
+        { key: 'player', frame: 39 },
+        { key: 'player', frame: 40 },
+        { key: 'player', frame: 41 }
+      ],
+      frameRate: 4,
       repeat: -1
     });
 
     scene.anims.create({
       key: 'idle-up',
-      frames: [{ key: 'player', frame: 1 }],
-      frameRate: 1,
+      frames: [
+        { key: 'player', frame: 30 },
+        { key: 'player', frame: 31 },
+        { key: 'player', frame: 32 },
+        { key: 'player', frame: 33 },
+        { key: 'player', frame: 34 },
+        { key: 'player', frame: 35   }
+      ],
+      frameRate: 4,
       repeat: -1
     });
 
