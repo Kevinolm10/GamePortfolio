@@ -6,7 +6,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    this.speed = 200;
+    this.speed = 100;
     this.setFrame(0);
 
     this.lastDirection = 'down';
@@ -104,9 +104,16 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       frameRate: FRAME_RATE,
       repeat: -1
     });
+
+    scene.anims.create({
+      key: 'phone',
+      frames: scene.anims.generateFrameNumbers('player', { start: 144, end: 152 }),
+      frameRate: FRAME_RATE,
+      repeat: -1
+    });
   }
 
-  move(left, right, up, down) {
+  move(left, right, up, down, phone = false) {
     this.body.setVelocity(0);
 
     let moving = false;
@@ -137,6 +144,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     if (!moving) {
       this.anims.play(`idle-${this.lastDirection}`, true);
+    }
+
+    if (!moving && phone) {
+      this.anims.play('phone', true);
     }
 
     this.body.velocity.normalize().scale(this.speed);
