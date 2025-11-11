@@ -6,9 +6,12 @@ export default class Objects extends Phaser.GameObjects.Container {
 
     scene.add.existing(this);
     scene.physics.add.existing(this, isStatic);
-    
 
     const tileSize = 16;
+
+    // Tighten collision box
+    this.body.setSize(tileSize - 2, tileSize - 2).setOffset(1, 1);
+    
 
     frames.forEach((frame, index) => {
       const sprite = scene.add.sprite(
