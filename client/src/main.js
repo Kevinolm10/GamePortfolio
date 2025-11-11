@@ -13,6 +13,10 @@ const config = {
     default: 'arcade',
     arcade: { debug: false }
   },
+    fps: {
+    target: 60,
+    forceSetTimeOut: true
+  },
   scene: [ MainScene ]
 };
 new Phaser.Game(config);
