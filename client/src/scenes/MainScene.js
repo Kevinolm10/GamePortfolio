@@ -17,8 +17,7 @@ export default class MainScene extends Phaser.Scene {
     // Load tile images
     this.load.image('interorTiles', '/assets/images/floorsNwalls.png');
     this.load.image('interiorObjects', '/assets/images/interiorAssets.png');
-
-    this.load.spritesheet('table', '/assets/images/interiorAssets.png', { frameWidth: 16, frameHeight: 16 });
+    this.load.image('collisions', '/assets/images/collision.png');
 
     // load player sprite sheet
     this.load.spritesheet('player', '/assets/images/player.png', {
@@ -37,6 +36,7 @@ export default class MainScene extends Phaser.Scene {
     // Add tilesets
     const tilesetA = map.addTilesetImage(map.tilesets[0].name, 'interorTiles');
     const tilesetB = map.addTilesetImage(map.tilesets[1].name, 'interiorObjects');
+    const tilesetC = map.addTilesetImage(map.tilesets[2].name, 'collisions');
 
     // Create layers
     const floorLayer = map.createLayer('floor', [tilesetA, tilesetB]);
@@ -44,17 +44,26 @@ export default class MainScene extends Phaser.Scene {
     const wallsLayer = map.createLayer('walls', [tilesetA, tilesetB]);
     const interiorObjectsLayer = map.createLayer('interiorObjects', [tilesetA, tilesetB]);
     const objectsTopLayer = map.createLayer('objectsTop', [tilesetA, tilesetB]);
+    const collisionLayer = map.createLayer('collisions', tilesetC);
 
     // Player Setup
     Player.createAnimations(this);
     this.player = new Player(this, 270, 200);
     this.player.setScale(1);
 
-    // Collision Setup
-    collisonZone(this, { outsideWallsLayer, wallsLayer, interiorObjectsLayer, objectsTopLayer }, this.player);
 
-    // Debugging
-    debug(this, { outsideWallsLayer, wallsLayer, interiorObjectsLayer, objectsTopLayer }, false, { setAllCollisions: false, map });
+    // Setup collisions
+    collisonZone(this, { collisionLayer }, this.player);
+
+    // boolean for ray debug with graphics
+    this.debugEnabled = false;
+
+    // boolean for collision debug with graphics
+    debug(this,
+      { outsideWallsLayer, wallsLayer, interiorObjectsLayer, objectsTopLayer, collisionLayer },
+      false,
+      { setAllCollisions: false, map }
+    );
 
 
     // Camera Setup
@@ -84,6 +93,10 @@ export default class MainScene extends Phaser.Scene {
     const down = this.cursors.down.isDown || this.wasd.down.isDown;
 
     this.player.move(left, right, up, down, this.wasd.phone.isDown);
+
+    if (typeof this.player.updateInteractionRay === 'function') {
+      this.player.updateInteractionRay();
+    }
 
   }
 }
