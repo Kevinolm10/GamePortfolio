@@ -14,9 +14,29 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     // enable collision with canvas boundaries and other objects
     this.setCollideWorldBounds(true);
     this.body.setBounce(1, 1);
-    this.body.setSize(10, 18);
-    this.body.setOffset(3, 14);
+    const bodySize = this.body.setSize(10, 18);
+    const bodyOffset = this.body.setOffset(3, 14);
 
+    // Sprite dimensions
+    const spriteWidth = 16;
+    const spriteHeight = 32;
+    const collisionWidth = spriteWidth;
+    const collisionHeight = spriteHeight / 4;
+
+    this.body.setSize(collisionWidth, collisionHeight);
+    this.body.setOffset(0, spriteHeight - collisionHeight);
+
+    // ray for interaction
+    const rayLength = 300;
+    // ray facing direction
+    this.facingDirection = 'down' || 'up' || 'left' || 'right';
+
+    this.interactionRay = new Phaser.Geom.Line(0, 0, 0, rayLength);
+
+      // graphics for ray debugging
+    this.rayGraphics = scene.add.graphics();
+    this.rayGraphics.setDepth(1000);
+    this.rayGraphics.setVisible(false);
   }
 
   static createAnimations(scene) {
@@ -142,11 +162,13 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       this.body.setVelocityX(-this.speed);
       this.anims.play('left', true);
       this.lastDirection = 'left';
+      this.facingDirection = 'left';
       moving = true;
     } else if (right) {
       this.body.setVelocityX(this.speed);
       this.anims.play('right', true);
       this.lastDirection = 'right';
+      this.facingDirection = 'right';
       moving = true;
     }
 
@@ -154,11 +176,13 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       this.body.setVelocityY(-this.speed);
       this.anims.play('up', true);
       this.lastDirection = 'up';
+      this.facingDirection = 'up';
       moving = true;
     } else if (down) {
       this.body.setVelocityY(this.speed);
       this.anims.play('down', true);
       this.lastDirection = 'down';
+      this.facingDirection = 'down';
       moving = true;
     }
 
@@ -171,5 +195,45 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     this.body.velocity.normalize().scale(this.speed);
+  }
+
+
+  updateInteractionRay() {
+    if (!this.interactionRay) return;
+
+    const debugOn = !!this.scene.debugEnabled;
+
+    if (!this.rayGraphics) {
+      this.rayGraphics = this.scene.add.graphics();
+      this.rayGraphics.setDepth(1000);
+    }
+
+    const rayLen = 20;
+    const startX = this.x;
+    const startY = this.y + Math.round(this.displayHeight * 0.25);
+
+    let endX = startX;
+    let endY = startY;
+    switch (this.facingDirection) {
+        case 'up': endY = startY - rayLen; break;
+        case 'down': endY = startY + rayLen; break;
+        case 'left': endX = startX - rayLen; break;
+        case 'right': endX = startX + rayLen; break;
+    }
+
+    this.interactionRay.setTo(startX, startY, endX, endY);
+
+    if (debugOn) {
+        this.rayGraphics.setVisible(true);
+        this.rayGraphics.clear();
+        this.rayGraphics.lineStyle(2, 0xff0000, 1);
+        this.rayGraphics.strokeLineShape(this.interactionRay);
+        this.rayGraphics.strokeRectShape(this.getBounds());
+    } else {
+        if (this.rayGraphics.visible) {
+          this.rayGraphics.clear();
+          this.rayGraphics.setVisible(false);
+        }
+    }
   }
 }
